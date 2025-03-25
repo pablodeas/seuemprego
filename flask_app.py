@@ -29,12 +29,26 @@ class Vaga(db.Model):
     __tablename__ = "vaga"
     id = db.Column(db.Integer, primary_key=True)
     conteudo = db.Column(db.String(4096))
+    salario = db.Column(db.String(4096))
+    escala = db.Column(db.String(4096))
+    local = db.Column(db.String(4096))
+    contato1 = db.Column(db.String(4096))
+    contato2 = db.Column(db.String(4096))
 
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "GET":
         return render_template("main_page.html", vaga=Vaga.query.all())
-    vaga = Vaga(conteudo=request.form["conteudo"])
+    
+    # Processa os dados do formulário
+    vaga = Vaga(
+        conteudo=request.form["conteudo"],
+        salario=request.form["salario"],
+        escala=request.form["escala"],
+        local=request.form["local"],
+        contato1=request.form["contato1"],
+        contato2=request.form["contato2"]
+    )
     db.session.add(vaga)
     db.session.commit()
     return redirect(url_for("index"))
