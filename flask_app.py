@@ -5,12 +5,13 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 load_dotenv()
-app.config["DEBUG"] = os.getenv("FLASK_DEBUG", "False").lower() in ["true", "1"]
+#app.config["DEBUG"] = os.getenv("FLASK_DEBUG", "False").lower() in ["true", "1"]
+app.config["DEBUG"] = True
 
-USERNAME = os.getenv("DB_USERNAME")
-PASSWORD = os.getenv("DB_PASSWORD")
-HOSTNAME = os.getenv("DB_HOSTNAME")
-DATABASE = os.getenv("DB_DATABASE")
+USERNAME = "pablodeas"
+PASSWORD = "Maitou2656"
+HOSTNAME = "pablodeas.mysql.pythonanywhere-services.com"
+DATABASE = "pablodeas$default"
 
 SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://{username}:{password}@{hostname}/{databasename}".format(
     username=USERNAME,
