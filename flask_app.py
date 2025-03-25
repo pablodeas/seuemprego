@@ -29,11 +29,11 @@ class Vaga(db.Model):
     __tablename__ = "vaga"
     id = db.Column(db.Integer, primary_key=True)
     conteudo = db.Column(db.String(4096))
-    salario = db.Column(db.String(4096))
-    escala = db.Column(db.String(4096))
-    local = db.Column(db.String(4096))
-    contato1 = db.Column(db.String(4096))
-    contato2 = db.Column(db.String(4096))
+    salario = db.Column(db.String(1000))
+    escala = db.Column(db.String(1000))
+    local = db.Column(db.String(1500))
+    contato1 = db.Column(db.String(1250))
+    contato2 = db.Column(db.String(1250))
 
 @app.route("/", methods=["GET", "POST"])
 def index():
