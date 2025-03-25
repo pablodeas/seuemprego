@@ -8,15 +8,15 @@ load_dotenv()
 USERNAME = "pablodeas"
 PASSWORD = os.getenv("PASSWORD")
 HOSTNAME = os.getenv("HOSTNAME")
-DATABASENAME = "pablodeas"
+DATABASENAME = "pablodeas$default"
 
 app = Flask(__name__)
 app.config["DEBUG"] = True
 
 SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://{username}:{password}@{hostname}/{databasename}".format(
     username=USERNAME,
-    password=PASSWORD,
-    hostname=HOSTNAME,
+    password="Maitou2656",
+    hostname="pablodeas.mysql.pythonanywhere-services.com",
     databasename=DATABASENAME,
 )
 app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
