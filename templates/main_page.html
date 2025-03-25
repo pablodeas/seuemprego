@@ -3,15 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vagas</title>
+    <title>seuemprego</title>
 </head>
 <body>
-    <h1>Lista de Vagas</h1>
+    <h1>seuemprego.com</h1>
     
     <!-- Exibe as vagas armazenadas -->
+     <h2>Vagas disponíveis</h2>
     <ul>
         {% for vaga in vaga %}
-            <li>{{ vaga.conteudo }}</li>
+            <li>
+                <strong>Conteúdo:</strong> {{ vaga.conteudo }}<br>
+                <strong>Salário:</strong> {{ vaga.salario }}<br>
+                <strong>Escala:</strong> {{ vaga.escala }}<br>
+                <strong>Local:</strong> {{ vaga.local }}<br>
+                <strong>Contato:</strong> {{ vaga.contato }}
+            </li>
         {% endfor %}
     </ul>
 
@@ -20,6 +27,22 @@
     <form method="POST" action="/">
         <label for="conteudo">Conteúdo da Vaga:</label><br>
         <textarea id="conteudo" name="conteudo" rows="4" cols="50" required></textarea><br><br>
+
+        <label for="salario">Salário:</label><br>
+        <input type="text" id="salario" name="salario" required><br><br>
+
+        <label for="escala">Escala:</label><br>
+        <input type="text" id="escala" name="escala" required><br><br>
+
+        <label for="local">Local:</label><br>
+        <input type="text" id="local" name="local" required><br><br>
+
+        <label for="contato1">Contato 1:</label><br>
+        <input type="text" id="contato1" name="contato1" required><br><br>
+
+        <label for="contato2">Contato 2:</label><br>
+        <input type="text" id="contato2" name="contato2"><br><br>
+
         <button type="submit">Enviar</button>
     </form>
 
