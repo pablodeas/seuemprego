@@ -1,43 +1,31 @@
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vagas</title>
+</head>
+<body>
+    <h1>Lista de Vagas</h1>
+    
+    <!-- Exibe as vagas armazenadas -->
+    <ul>
+        {% for vaga in vaga %}
+            <li>{{ vaga.conteudo }}</li>
+        {% endfor %}
+    </ul>
 
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
-        <title>My scratchboard page</title>
-    </head>
+    <!-- Formulário para adicionar uma nova vaga -->
+    <h2>Adicionar Vaga</h2>
+    <form method="POST" action="/">
+        <label for="conteudo">Conteúdo da Vaga:</label><br>
+        <textarea id="conteudo" name="conteudo" rows="4" cols="50" required></textarea><br><br>
+        <button type="submit">Enviar</button>
+    </form>
 
-    <body>
-        <nav class="navbar navbar-inverse">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="#">My scratchpad</a>
-                </div>
-            </div>
-        </nav>
-
-
-        <div class="container">
-            {% for comment in comments %}
-                <div class="row">
-                    {{ comment.content }}
-                </div>
-            {% endfor %}
-
-            <div class="row">
-                <form action="." method="POST">
-                    <textarea name="contents" placeholder="Enter a comment" class="form-control"></textarea>
-                    <input type="submit" class="btn btn-success" value="Post comment">
-                </form>
-            </div>
-
-        </div><!-- /.container -->
-    </body>
+    <!-- Exibe mensagens de erro, se houver -->
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+</body>
 </html>
