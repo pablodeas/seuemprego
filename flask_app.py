@@ -28,7 +28,7 @@ db = SQLAlchemy(app)
 class Vaga(db.Model):
     __tablename__ = "vaga"
     id = db.Column(db.Integer, primary_key=True)
-    conteudo = db.Column(db.String(4096))
+    conteudo = db.Column(db.String(2000)))
     salario = db.Column(db.String(1000))
     escala = db.Column(db.String(1000))
     local = db.Column(db.String(1500))
