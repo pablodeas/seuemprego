@@ -42,49 +42,14 @@
         </div>
     </div>
 
-    <div class="container-sm">
-        <h2>Adicionar Vaga</h2>
-        <form method="POST" action="/">
-            <div class="mb-3">
-                <label for="info" class="form-label">Descrição:</label>
-                <textarea id="info" name="info" class="form-control" rows="4" required></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="titulo" class="form-label">Título:</label>
-                <input type="text" id="titulo" name="titulo" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label for="salario" class="form-label">Salário:</label>
-                <input type="text" id="salario" name="salario" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label for="escala" class="form-label">Escala:</label>
-                <input type="text" id="escala" name="escala" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label for="local" class="form-label">Local:</label>
-                <input type="text" id="local" name="local" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label for="contato1" class="form-label">Contato 1:</label>
-                <input type="text" id="contato1" name="contato1" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label for="contato2" class="form-label">Contato 2:</label>
-                <input type="text" id="contato2" name="contato2" class="form-control">
-            </div>
-            <button type="submit" class="btn btn-primary">Enviar</button>
-        </form>
+    <div class="container-sm text-center mt-4">
+        <a href="/add_vaga" class="btn btn-success">Adicionar Nova Vaga</a>
     </div>
-    
+
     <div class="container-sm mt-3 text-center">
         {% if error %}
             <p class="text-danger">{{ error }}</p>
         {% endif %}
-    </div>
-
-    <div class="container-sm text-center mt-4">
-        <a href="/add_vaga" class="btn btn-success">Adicionar Nova Vaga</a>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
