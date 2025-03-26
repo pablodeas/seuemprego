@@ -13,11 +13,12 @@
     <ul>
         {% for vaga in vaga %}
             <li>
-                <strong>Conteúdo:</strong> {{ vaga.conteudo }}<br>
+                <strong>Título:</strong> {{ vaga.titulo }}<br>
                 <strong>Salário:</strong> {{ vaga.salario }}<br>
                 <strong>Escala:</strong> {{ vaga.escala }}<br>
                 <strong>Local:</strong> {{ vaga.local }}<br>
-                <strong>Contato:</strong> {{ vaga.contato }}
+                <strong>Contato:</strong> {{ vaga.contato1 }}<br>
+                <strong>Contato:</strong> {{ vaga.contato2 }}<br>
             </li>
         {% endfor %}
     </ul>
@@ -25,8 +26,8 @@
     <!-- Formulário para adicionar uma nova vaga -->
     <h2>Adicionar Vaga</h2>
     <form method="POST" action="/">
-        <label for="conteudo">Conteúdo da Vaga:</label><br>
-        <textarea id="conteudo" name="conteudo" rows="4" cols="50" required></textarea><br><br>
+        <label for="titulo">Título da Vaga:</label><br>
+        <textarea id="titulo" name="titulo" rows="4" cols="50" required></textarea><br><br>
 
         <label for="salario">Salário:</label><br>
         <input type="text" id="salario" name="salario" required><br><br>

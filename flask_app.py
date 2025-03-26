@@ -3,6 +3,9 @@ from dotenv import load_dotenv
 from flask import Flask, redirect, render_template, request, url_for
 from flask_sqlalchemy import SQLAlchemy
 
+"""
+TODO:   Antes de subir a aplicação, dar drop table.
+"""
 app = Flask(__name__)
 load_dotenv()
 #app.config["DEBUG"] = os.getenv("FLASK_DEBUG", "False").lower() in ["true", "1"]
@@ -28,7 +31,7 @@ db = SQLAlchemy(app)
 class Vaga(db.Model):
     __tablename__ = "vaga"
     id = db.Column(db.Integer, primary_key=True)
-    conteudo = db.Column(db.String(2000)))
+    titulo = db.Column(db.String(2000))
     salario = db.Column(db.String(1000))
     escala = db.Column(db.String(1000))
     local = db.Column(db.String(1500))
@@ -42,7 +45,7 @@ def index():
     
     # Processa os dados do formulário
     vaga = Vaga(
-        conteudo=request.form["conteudo"],
+        titulo=request.form["titulo"],
         salario=request.form["salario"],
         escala=request.form["escala"],
         local=request.form["local"],
