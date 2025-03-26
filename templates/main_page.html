@@ -4,52 +4,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>seuemprego</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 </head>
 <body>
-    <h1>seuemprego.com</h1>
-    
-    <!-- Exibe as vagas armazenadas -->
-     <h2>Vagas disponíveis</h2>
-    <ul>
-        {% for vaga in vaga %}
-            <li>
-                <strong>Título:</strong> {{ vaga.titulo }}<br>
-                <strong>Salário:</strong> {{ vaga.salario }}<br>
-                <strong>Escala:</strong> {{ vaga.escala }}<br>
-                <strong>Local:</strong> {{ vaga.local }}<br>
-                <strong>Contato:</strong> {{ vaga.contato1 }}<br>
-                <strong>Contato:</strong> {{ vaga.contato2 }}<br>
-            </li>
-        {% endfor %}
-    </ul>
+    <div class="container-sm">
+        <header>
+            <h1>seuemprego.com</h1>
+        </header>
+    </div>
 
-    <!-- Formulário para adicionar uma nova vaga -->
-    <h2>Adicionar Vaga</h2>
-    <form method="POST" action="/">
-        <label for="titulo">Título da Vaga:</label><br>
-        <textarea id="titulo" name="titulo" rows="4" cols="50" required></textarea><br><br>
+    <div class="container-sm">
+        <h2>Vagas disponíveis</h2>
+        <ul>
+            {% for vaga in vaga %}
+                <li>
+                    <strong>Título:</strong> {{ vaga.titulo }}<br>
+                    <strong>Salário:</strong> {{ vaga.salario }}<br>
+                    <strong>Escala:</strong> {{ vaga.escala }}<br>
+                    <strong>Local:</strong> {{ vaga.local }}<br>
+                    <strong>Contato:</strong> {{ vaga.contato1 }}<br>
+                    <strong>Contato:</strong> {{ vaga.contato2 }}<br>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 
-        <label for="salario">Salário:</label><br>
-        <input type="text" id="salario" name="salario" required><br><br>
+    <div class="container-sm">
+        <h2>Adicionar Vaga</h2>
+        <form method="POST" action="/">
+            <label for="titulo">Título / Descrição:</label><br>
+            <textarea id="titulo" name="titulo" rows="4" cols="50" required></textarea><br><br>
+        
+            <label for="salario">Salário:</label><br>
+            <input type="text" id="salario" name="salario" required><br><br>
+        
+            <label for="escala">Escala:</label><br>
+            <input type="text" id="escala" name="escala" required><br><br>
+        
+            <label for="local">Local:</label><br>
+            <input type="text" id="local" name="local" required><br><br>
+        
+            <label for="contato1">Contato 1:</label><br>
+            <input type="text" id="contato1" name="contato1" required><br><br>
+        
+            <label for="contato2">Contato 2:</label><br>
+            <input type="text" id="contato2" name="contato2"><br><br>
+        
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
 
-        <label for="escala">Escala:</label><br>
-        <input type="text" id="escala" name="escala" required><br><br>
-
-        <label for="local">Local:</label><br>
-        <input type="text" id="local" name="local" required><br><br>
-
-        <label for="contato1">Contato 1:</label><br>
-        <input type="text" id="contato1" name="contato1" required><br><br>
-
-        <label for="contato2">Contato 2:</label><br>
-        <input type="text" id="contato2" name="contato2"><br><br>
-
-        <button type="submit">Enviar</button>
-    </form>
-
-    <!-- Exibe mensagens de erro, se houver -->
     {% if error %}
         <p style="color: red;">{{ error }}</p>
     {% endif %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
