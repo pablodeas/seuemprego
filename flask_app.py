@@ -39,21 +39,28 @@ class Vaga(db.Model):
     contato1 = db.Column(db.String(1250))
     contato2 = db.Column(db.String(1250))
 
-@app.route("/", methods=["GET", "POST"])
+@app.route("/", methods=["GET"])
 def index():
-    if request.method == "GET":
-        return render_template("main_page.html", vaga=Vaga.query.all())
-    
-    # Processa os dados do formulário
-    vaga = Vaga(
-        info=request.form["info"],
-        titulo=request.form["titulo"],
-        salario=request.form["salario"],
-        escala=request.form["escala"],
-        local=request.form["local"],
-        contato1=request.form["contato1"],
-        contato2=request.form["contato2"]
-    )
-    db.session.add(vaga)
-    db.session.commit()
-    return redirect(url_for("index"))
+    vagas = Vaga.query.all()
+    return render_template("main_page.html", vaga=vagas)
+
+@app.route("/add_vaga", methods=["GET", "POST"])
+def add_vaga():
+    if request.method == "POST":
+        # Processa os dados do formulário
+        vaga = Vaga(
+            info=request.form["info"],
+            titulo=request.form["titulo"],
+            salario=request.form["salario"],
+            escala=request.form["escala"],
+            local=request.form["local"],
+            contato1=request.form["contato1"],
+            contato2=request.form["contato2"],
+        )
+        db.session.add(vaga)
+        db.session.commit()
+        return redirect(url_for("index"))
+    return render_template("add_vaga.html")
+
+if __name__ == "__main__":
+    app.run(debug=True)
