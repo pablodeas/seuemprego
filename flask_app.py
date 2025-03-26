@@ -31,6 +31,7 @@ db = SQLAlchemy(app)
 class Vaga(db.Model):
     __tablename__ = "vaga"
     id = db.Column(db.Integer, primary_key=True)
+    info = db.Column(db.String(2000))
     titulo = db.Column(db.String(2000))
     salario = db.Column(db.String(1000))
     escala = db.Column(db.String(1000))
@@ -45,6 +46,7 @@ def index():
     
     # Processa os dados do formulário
     vaga = Vaga(
+        info=request.form["info"],
         titulo=request.form["titulo"],
         salario=request.form["salario"],
         escala=request.form["escala"],
