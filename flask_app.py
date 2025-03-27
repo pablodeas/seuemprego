@@ -7,14 +7,15 @@ from flask_sqlalchemy import SQLAlchemy
 TODO:   Antes de subir a aplicação, dar drop table.
 """
 app = Flask(__name__)
-load_dotenv()
-#app.config["DEBUG"] = os.getenv("FLASK_DEBUG", "False").lower() in ["true", "1"]
-app.config["DEBUG"] = True
+app.config["DEBUG"] = False
 
-USERNAME = "pablodeas"
-PASSWORD = "Maitou2656"
-HOSTNAME = "pablodeas.mysql.pythonanywhere-services.com"
-DATABASE = "pablodeas$default"
+project_folder = os.path.expanduser('~/mysite')  # adjust as appropriate
+load_dotenv(os.path.join(project_folder, '.env'))
+
+USERNAME = os.getenv("DB_USERNAME")
+PASSWORD = os.getenv("DB_PASSWORD")
+HOSTNAME = os.getenv("DB_HOSTNAME")
+DATABASE = os.getenv("DB_DATABASE")
 
 SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://{username}:{password}@{hostname}/{databasename}".format(
     username=USERNAME,
