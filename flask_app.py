@@ -147,7 +147,7 @@ def register():
         # Verificar se o usuário já existe
         if Usuario.query.filter_by(username=username).first():
             flash("Usuário já existe. Escolha outro nome.", "danger")
-            return redirect(url_for("register"))
+            return render_template("register.html")  # Renderiza a página de registro diretamente
 
         # Criar novo usuário
         novo_usuario = Usuario(username=username, email=email)
