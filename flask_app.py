@@ -10,7 +10,7 @@ import secrets
 TODO:   Antes de subir a aplicação, dar drop table.
 """
 app = Flask(__name__)
-app.config["DEBUG"] = False
+app.config["DEBUG"] = True
 #app.secret_key = os.getenv("SECRET_KEY")
 app.secret_key = "secret_key"
 
