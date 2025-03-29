@@ -144,10 +144,15 @@ def register():
         email = request.form["email"]
         password = request.form["password"]
 
-        # Verificar se o usuário já existe
+        # Verificar se o nome de usuário já existe
         if Usuario.query.filter_by(username=username).first():
             flash("Usuário já existe. Escolha outro nome.", "danger")
-            return render_template("register.html")  # Renderiza a página de registro diretamente
+            return render_template("register.html")
+
+        # Verificar se o email já existe
+        if Usuario.query.filter_by(email=email).first():
+            flash("Email já está em uso. Escolha outro email.", "danger")
+            return render_template("register.html")
 
         # Criar novo usuário
         novo_usuario = Usuario(username=username, email=email)
