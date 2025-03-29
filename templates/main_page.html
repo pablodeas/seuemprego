@@ -16,17 +16,16 @@
                 </a>
 
                 <div class="d-flex align-items-center">
-                    <!-- Botão Adicionar Nova Vaga no header -->
-                    <a href="/add_vaga" class="btn btn-success me-3">Adicionar Nova Vaga</a>
                     {% if session.get("logged_in") %}
-                        <div>
-                            <span class="fs-4 text-warning me-3">
-                                Olá{% if session.get("username") %}, {{ session.get("username") }}{% endif %}
-                            </span>
-                            <a href="/privado" class="fs-5 fw-medium text-decoration-none">Minha Área</a>
-                        </div>
+                        <span class="fs-5 text-warning me-3">
+                            Olá{% if session.get("username") %}, {{ session.get("username") }}{% endif %}
+                        </span>
+                    {% endif %}
+                    <a href="/add_vaga" class="btn btn-primary me-3">Adicionar Vaga</a>
+                    {% if session.get("logged_in") %}
+                        <a href="/privado" class="fs-5 btn btn-primary">Minha Área</a>
                     {% else %}
-                        <a href="/login" class="fs-5 fw-medium text-decoration-none">Login</a>
+                        <a href="/login" class="fs-5 btn btn-primary">Login</a>
                     {% endif %}
                 </div>
             </div>
@@ -74,7 +73,7 @@
 
     <!-- Botão Adicionar Nova Vaga na parte inferior -->
     <div class="container-sm text-center mt-4">
-        <a href="/add_vaga" class="btn btn-success">Adicionar Nova Vaga</a>
+        <a href="/add_vaga" class="btn btn-primary">Adicionar Vaga</a>
     </div>
 
     <div class="container-sm mt-3 text-center">
