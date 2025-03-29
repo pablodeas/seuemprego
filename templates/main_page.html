@@ -20,10 +20,10 @@
                         <span class="text-warning me-3">
                             Olá{% if session.get("username") %}, {{ session.get("username") }}{% endif %}
                         </span>
-                        <a href="/privado" class="fw-medium text-decoration-none">Minha Área</a>
+                        <a href="/privado" class="fs-4 fw-medium text-decoration-none">Minha Área</a>
                     </div>
                 {% else %}
-                    <a href="/login" class="fw-medium text-decoration-none">Login</a>
+                    <a href="/login" class="fs-4 fw-medium text-decoration-none">Login</a>
                 {% endif %}
             </div>
         </header>

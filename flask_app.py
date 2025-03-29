@@ -9,7 +9,8 @@ TODO:   Antes de subir a aplicação, dar drop table.
 """
 app = Flask(__name__)
 app.config["DEBUG"] = False
-app.secret_key = os.getenv("SECRET_KEY")
+#app.secret_key = os.getenv("SECRET_KEY")
+app.secret_key = "secret_key"
 
 project_folder = os.path.expanduser('~/mysite')  # Ajustar dependendo do ambiente
 load_dotenv(os.path.join(project_folder, '.env'))
