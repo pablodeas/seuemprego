@@ -195,9 +195,14 @@ def reset_password():
         reset_url = url_for("reset_password_token", token=token, _external=True)
         msg = Message("Redefinição de Senha - SeuEmprego", recipients=[email])
         msg.body = f"Olá, {usuario.username}!\n\nClique no link abaixo para redefinir sua senha:\n\n{reset_url}\n\nSe você não solicitou esta redefinição, ignore este email."
-        mail.send(msg)
 
-        flash("Um email com instruções para redefinir sua senha foi enviado.", "info")
+        try:
+            mail.send(msg)
+            flash("Um email com instruções para redefinir sua senha foi enviado.", "info")
+        except Exception as e:
+            print(f"Erro ao enviar email: {e}")  # Log do erro no terminal
+            flash("Ocorreu um erro ao enviar o email. Tente novamente mais tarde.", "danger")
+
         return redirect(url_for("login"))
 
     return render_template("reset_password.html")
