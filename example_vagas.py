@@ -2,7 +2,8 @@ from flask_app import db, Vaga
 
 # Vagas de exemplo
 vagas = [
-    {
+    {   
+        "id": 1,
         "info": "Desenvolvimento de aplicações web utilizando Python e Flask.",
         "titulo": "Desenvolvedor Python",
         "salario": "R$ 6.000,00",
@@ -11,7 +12,8 @@ vagas = [
         "contato1": "contato@empresa.com",
         "contato2": "1234-5678"
     },
-    {
+    {   
+        "id": 1,
         "info": "Gerenciamento de projetos ágeis e liderança de equipes.",
         "titulo": "Gerente de Projetos",
         "salario": "R$ 8.500,00",
@@ -21,6 +23,7 @@ vagas = [
         "contato2": "9876-5432"
     },
     {
+        "id": 1,
         "info": "Atendimento ao cliente e suporte técnico.",
         "titulo": "Analista de Suporte",
         "salario": "R$ 3.200,00",
