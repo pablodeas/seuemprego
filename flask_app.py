@@ -71,15 +71,19 @@ def index():
 def login():
     if request.method == "POST":
         username = request.form["username"]
+        email = request.form["email"]
         password = request.form["password"]
-        usuario = Usuario.query.filter_by(username=username).first()
+
+        # Verificar se o usuário existe com o nome de usuário e email
+        usuario = Usuario.query.filter_by(username=username, email=email).first()
         if usuario and usuario.check_password(password):
             session["logged_in"] = True
             session["user_id"] = usuario.id
+            session["username"] = usuario.username
             flash("Login realizado com sucesso!", "success")
             return redirect(url_for("index"))
         else:
-            flash("Usuário ou senha inválidos.", "danger")
+            flash("Usuário, email ou senha inválidos.", "danger")
     return render_template("login.html")
 
 # Rota para logout

@@ -17,7 +17,9 @@
 
                 {% if session.get("logged_in") %}
                     <div>
-                        <span class="text-warning me-3">Olá, {{ session.get('username') }}</span>
+                        <span class="text-warning me-3">
+                            Olá{% if session.get("username") %}, {{ session.get("username") }}{% endif %}
+                        </span>
                         <a href="/privado" class="fw-medium text-decoration-none">Minha Área</a>
                     </div>
                 {% else %}
