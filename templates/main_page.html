@@ -10,23 +10,32 @@
 <body>
     <div class="container-sm">
         <header class="bg-black text-warning py-3 my-2 rounded">
-            <div class="container d-flex justify-content-between align-items-center">
-                <a href="/" class="text-warning text-decoration-none">
-                    <h1 class="mb-0">SeuEmprego</h1>
-                </a>
-
-                <div class="d-flex align-items-center">
-                    {% if session.get("logged_in") %}
-                        <span class="fs-5 text-warning me-3">
-                            Olá{% if session.get("username") %}, {{ session.get("username") }}{% endif %}
-                        </span>
-                    {% endif %}
-                    <a href="/add_vaga" class="btn btn-primary me-3">Adicionar Vaga</a>
-                    {% if session.get("logged_in") %}
-                        <a href="/privado" class="btn btn-primary me-3">Minha Área</a>
-                    {% else %}
-                        <a href="/login" class="btn btn-primary me-3">Login</a>
-                    {% endif %}
+            <div class="container">
+                <!-- Linha para o título -->
+                <div class="row">
+                    <div class="col-12 text-center text-md-start">
+                        <a href="/" class="text-warning text-decoration-none">
+                            <h1 class="mb-0">SeuEmprego</h1>
+                        </a>
+                    </div>
+                </div>
+                <!-- Linha para os botões e saudação -->
+                <div class="row mt-2">
+                    <div class="col-12 d-flex flex-column flex-md-row justify-content-md-between align-items-center">
+                        {% if session.get("logged_in") %}
+                            <span class="fs-5 text-warning mb-2 mb-md-0">
+                                Olá{% if session.get("username") %}, {{ session.get("username") }}{% endif %}
+                            </span>
+                        {% endif %}
+                        <div class="d-flex flex-wrap justify-content-center justify-content-md-end gap-2">
+                            <a href="/add_vaga" class="btn btn-primary">Adicionar Vaga</a>
+                            {% if session.get("logged_in") %}
+                                <a href="/privado" class="btn btn-primary">Minha Área</a>
+                            {% else %}
+                                <a href="/login" class="btn btn-primary">Login</a>
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
             </div>
         </header>
@@ -48,7 +57,7 @@
     </div>
 
     <div class="container-sm vaga-container">
-        <h2>Vagas da Semana</h2>
+        <h2>Vagas</h2>
         <!-- Vagas organizadas em grid -->
         <div class="row">
             {% for vaga in vaga %}
