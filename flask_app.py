@@ -9,7 +9,7 @@ TODO:   Antes de subir a aplicação, dar drop table.
 """
 app = Flask(__name__)
 app.config["DEBUG"] = False
-app.secret_key = "sua_chave_secreta"  # Substitua por uma chave secreta segura
+app.secret_key = os.getenv("SECRET_KEY")
 
 project_folder = os.path.expanduser('~/mysite')  # Ajustar dependendo do ambiente
 load_dotenv(os.path.join(project_folder, '.env'))
@@ -57,10 +57,6 @@ class Vaga(db.Model):
     contato2 = db.Column(db.String(1250))
     usuario_id = db.Column(db.Integer, db.ForeignKey("usuario.id"), nullable=False)
 
-# Usuário e senha para autenticação (pode ser armazenado em um banco de dados)
-USUARIO = "admin"
-SENHA = "1234"
-
 @app.route("/", methods=["GET"])
 def index():
     vagas = Vaga.query.all()
@@ -74,7 +70,6 @@ def login():
         email = request.form["email"]
         password = request.form["password"]
 
-        # Verificar se o usuário existe com o nome de usuário e email
         usuario = Usuario.query.filter_by(username=username, email=email).first()
         if usuario and usuario.check_password(password):
             session["logged_in"] = True
