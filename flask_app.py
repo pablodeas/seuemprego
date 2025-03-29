@@ -1,16 +1,16 @@
 import os
+import secrets
 from dotenv import load_dotenv
 from flask import Flask, redirect, render_template, request, url_for, session, flash
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_mail import Mail, Message
-import secrets
 
 """
 TODO:   Antes de subir a aplicação, dar drop table.
 """
 app = Flask(__name__)
-app.config["DEBUG"] = True
+app.config["DEBUG"] = False
 #app.secret_key = os.getenv("SECRET_KEY")
 app.secret_key = "secret_key"
 
@@ -51,6 +51,7 @@ class Usuario(db.Model):
     email = db.Column(db.String(150), unique=True, nullable=False)
     password_hash = db.Column(db.String(200), nullable=False)
     reset_token = db.Column(db.String(100), nullable=True)  # Token para redefinição de senha
+    is_admin = db.Column(db.Boolean, default=False)  # Indica se o usuário é admin
     vagas = db.relationship("Vaga", backref="criador", lazy=True)
 
     def set_password(self, password):
@@ -226,6 +227,45 @@ def reset_password_token(token):
         return redirect(url_for("login"))
 
     return render_template("reset_password_form.html")
+
+@app.route("/admin", methods=["GET", "POST"])
+def admin():
+    if not session.get("logged_in"):
+        flash("Você precisa fazer login para acessar esta página.", "warning")
+        return redirect(url_for("login"))
+
+    usuario_id = session.get("user_id")
+    usuario = Usuario.query.get(usuario_id)
+
+    if not usuario or not usuario.is_admin:
+        flash("Você não tem permissão para acessar esta página.", "danger")
+        return redirect(url_for("index"))
+
+    # Obter todos os usuários e vagas
+    usuarios = Usuario.query.all()
+    vagas = Vaga.query.all()
+
+    if request.method == "POST":
+        # Alterar senha de um usuário
+        if "alterar_senha" in request.form:
+            user_id = request.form["user_id"]
+            nova_senha = request.form["nova_senha"]
+            user = Usuario.query.get(user_id)
+            if user:
+                user.set_password(nova_senha)
+                db.session.commit()
+                flash(f"Senha do usuário {user.username} alterada com sucesso!", "success")
+
+        # Excluir uma vaga
+        if "excluir_vaga" in request.form:
+            vaga_id = request.form["vaga_id"]
+            vaga = Vaga.query.get(vaga_id)
+            if vaga:
+                db.session.delete(vaga)
+                db.session.commit()
+                flash(f"Vaga '{vaga.titulo}' excluída com sucesso!", "success")
+
+    return render_template("admin.html", usuarios=usuarios, vagas=vagas)
 
 if __name__ == "__main__":
     app.run(debug=True)
