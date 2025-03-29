@@ -3,6 +3,8 @@ from dotenv import load_dotenv
 from flask import Flask, redirect, render_template, request, url_for, session, flash
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_mail import Mail, Message
+import secrets
 
 """
 TODO:   Antes de subir a aplicação, dar drop table.
@@ -30,6 +32,16 @@ app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
 app.config["SQLALCHEMY_POOL_RECYCLE"] = 299
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
+# Configuração do Flask-Mail
+app.config["MAIL_SERVER"] = "smtp.gmail.com"  # Servidor SMTP (exemplo: Gmail)
+app.config["MAIL_PORT"] = 587  # Porta SMTP
+app.config["MAIL_USE_TLS"] = True
+app.config["MAIL_USERNAME"] = os.getenv("MAIL_USERNAME")  # Email do remetente
+app.config["MAIL_PASSWORD"] = os.getenv("MAIL_PASSWORD")  # Senha do remetente
+app.config["MAIL_DEFAULT_SENDER"] = os.getenv("MAIL_USERNAME")  # Email padrão do remetente
+
+mail = Mail(app)
+
 db = SQLAlchemy(app)
 
 class Usuario(db.Model):
@@ -38,6 +50,7 @@ class Usuario(db.Model):
     username = db.Column(db.String(150), unique=True, nullable=False)
     email = db.Column(db.String(150), unique=True, nullable=False)
     password_hash = db.Column(db.String(200), nullable=False)
+    reset_token = db.Column(db.String(100), nullable=True)  # Token para redefinição de senha
     vagas = db.relationship("Vaga", backref="criador", lazy=True)
 
     def set_password(self, password):
@@ -163,26 +176,51 @@ def register():
         return redirect(url_for("login"))
     return render_template("register.html")
 
-@app.route("/alterar_senha", methods=["GET", "POST"])
-def alterar_senha():
-    if not session.get("logged_in"):
-        flash("Você precisa fazer login para acessar esta página.", "warning")
-        return redirect(url_for("login"))
+@app.route("/reset_password", methods=["GET", "POST"])
+def reset_password():
     if request.method == "POST":
-        usuario_id = session.get("user_id")
-        usuario = Usuario.query.get(usuario_id)
-        senha_atual = request.form["senha_atual"]
-        nova_senha = request.form["nova_senha"]
+        email = request.form["email"]
+        usuario = Usuario.query.filter_by(email=email).first()
 
-        if not usuario.check_password(senha_atual):
-            flash("Senha atual incorreta.", "danger")
-            return redirect(url_for("alterar_senha"))
+        if not usuario:
+            flash("Email não encontrado.", "danger")
+            return render_template("reset_password.html")
 
-        usuario.set_password(nova_senha)
+        # Gerar um token único para redefinição de senha
+        token = secrets.token_urlsafe(16)
+        usuario.reset_token = token
         db.session.commit()
-        flash("Senha alterada com sucesso!", "success")
-        return redirect(url_for("privado"))
-    return render_template("alterar_senha.html")
+
+        # Enviar email com o link de redefinição
+        reset_url = url_for("reset_password_token", token=token, _external=True)
+        msg = Message("Redefinição de Senha - SeuEmprego", recipients=[email])
+        msg.body = f"Olá, {usuario.username}!\n\nClique no link abaixo para redefinir sua senha:\n\n{reset_url}\n\nSe você não solicitou esta redefinição, ignore este email."
+        mail.send(msg)
+
+        flash("Um email com instruções para redefinir sua senha foi enviado.", "info")
+        return redirect(url_for("login"))
+
+    return render_template("reset_password.html")
+
+
+@app.route("/reset_password/<token>", methods=["GET", "POST"])
+def reset_password_token(token):
+    usuario = Usuario.query.filter_by(reset_token=token).first()
+
+    if not usuario:
+        flash("Token inválido ou expirado.", "danger")
+        return redirect(url_for("login"))
+
+    if request.method == "POST":
+        nova_senha = request.form["nova_senha"]
+        usuario.set_password(nova_senha)
+        usuario.reset_token = None  # Invalida o token após o uso
+        db.session.commit()
+
+        flash("Senha redefinida com sucesso! Faça login.", "success")
+        return redirect(url_for("login"))
+
+    return render_template("reset_password_form.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
