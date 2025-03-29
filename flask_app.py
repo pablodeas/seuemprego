@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 from flask import Flask, redirect, render_template, request, url_for, session, flash
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
 
 """
 TODO:   Antes de subir a aplicação, dar drop table.
@@ -30,6 +31,19 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
 
+class Usuario(db.Model):
+    __tablename__ = "usuario"
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(150), unique=True, nullable=False)
+    password_hash = db.Column(db.String(200), nullable=False)
+    vagas = db.relationship("Vaga", backref="criador", lazy=True)
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
 class Vaga(db.Model):
     __tablename__ = "vaga"
     id = db.Column(db.Integer, primary_key=True)
@@ -40,6 +54,7 @@ class Vaga(db.Model):
     local = db.Column(db.String(1500))
     contato1 = db.Column(db.String(1250))
     contato2 = db.Column(db.String(1250))
+    usuario_id = db.Column(db.Integer, db.ForeignKey("usuario.id"), nullable=False)
 
 # Usuário e senha para autenticação (pode ser armazenado em um banco de dados)
 USUARIO = "admin"
@@ -56,8 +71,10 @@ def login():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
-        if username == USUARIO and password == SENHA:
+        usuario = Usuario.query.filter_by(username=username).first()
+        if usuario and usuario.check_password(password):
             session["logged_in"] = True
+            session["user_id"] = usuario.id
             flash("Login realizado com sucesso!", "success")
             return redirect(url_for("index"))
         else:
@@ -87,12 +104,36 @@ def add_vaga():
             local=request.form["local"],
             contato1=request.form["contato1"],
             contato2=request.form["contato2"],
+            usuario_id=session.get("user_id")  # Assuming user_id is stored in session
         )
         db.session.add(vaga)
         db.session.commit()
         flash("Vaga adicionada com sucesso!", "success")
         return redirect(url_for("index"))
     return render_template("add_vaga.html")
+
+@app.route("/privado", methods=["GET", "POST"])
+def privado():
+    if not session.get("logged_in"):
+        flash("Você precisa fazer login para acessar esta página.", "warning")
+        return redirect(url_for("login"))
+    usuario_id = session.get("user_id")
+    vagas = Vaga.query.filter_by(usuario_id=usuario_id).all()
+    return render_template("privado.html", vagas=vagas)
+
+@app.route("/delete_vaga/<int:vaga_id>", methods=["POST"])
+def delete_vaga(vaga_id):
+    if not session.get("logged_in"):
+        flash("Você precisa fazer login para acessar esta página.", "warning")
+        return redirect(url_for("login"))
+    vaga = Vaga.query.get_or_404(vaga_id)
+    if vaga.usuario_id != session.get("user_id"):
+        flash("Você não tem permissão para deletar esta vaga.", "danger")
+        return redirect(url_for("privado"))
+    db.session.delete(vaga)
+    db.session.commit()
+    flash("Vaga deletada com sucesso!", "success")
+    return redirect(url_for("privado"))
 
 if __name__ == "__main__":
     app.run(debug=True)
