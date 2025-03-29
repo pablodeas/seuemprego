@@ -71,12 +71,13 @@ def login():
         email = request.form["email"]
         password = request.form["password"]
 
+        # Verificar se o usuário existe com o nome de usuário e email
         usuario = Usuario.query.filter_by(username=username, email=email).first()
         if usuario and usuario.check_password(password):
             session["logged_in"] = True
             session["user_id"] = usuario.id
             session["username"] = usuario.username
-            flash("Login realizado com sucesso!", "success")
+            flash("Olá, tudo bem? Todas as vagas são apagadas no primeiro domingo do mês, então fique de olho 😉.", "info")
             return redirect(url_for("index"))
         else:
             flash("Usuário, email ou senha inválidos.", "danger")
