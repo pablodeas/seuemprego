@@ -11,23 +11,21 @@
     <div class="container-sm">
         <header class="bg-black text-warning py-3 my-2 rounded">
             <div class="container">
-                <!-- Linha para o título -->
-                <div class="row">
-                    <div class="col-12 text-center text-md-start">
+                <div class="row align-items-center">
+                    <!-- Título -->
+                    <div class="col-12 col-md-6 text-center text-md-start">
                         <a href="/" class="text-warning text-decoration-none">
                             <h1 class="mb-0">SeuEmprego</h1>
                         </a>
                     </div>
-                </div>
-                <!-- Linha para os botões e saudação -->
-                <div class="row mt-2">
-                    <div class="col-12 d-flex flex-column flex-md-row justify-content-md-between align-items-center">
+                    <!-- Botões e saudação -->
+                    <div class="col-12 col-md-6 d-flex flex-column flex-md-row justify-content-md-end align-items-center mt-3 mt-md-0">
                         {% if session.get("logged_in") %}
-                            <span class="fs-5 text-warning mb-2 mb-md-0">
+                            <span class="fs-5 text-warning me-md-3 mb-2 mb-md-0">
                                 Olá{% if session.get("username") %}, {{ session.get("username") }}{% endif %}
                             </span>
                         {% endif %}
-                        <div class="d-flex flex-wrap justify-content-center justify-content-md-end gap-2">
+                        <div class="d-flex flex-wrap justify-content-center gap-2">
                             <a href="/add_vaga" class="btn btn-primary">Adicionar Vaga</a>
                             {% if session.get("logged_in") %}
                                 <a href="/privado" class="btn btn-primary">Minha Área</a>
