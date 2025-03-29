@@ -15,9 +15,14 @@
                     <h1 class="mb-0">SeuEmprego</h1>
                 </a>
 
-                <a href="/privado" class="fw-medium text-decoration-none">
-                    Meu Acesso
-                </a>
+                {% if session.get("logged_in") %}
+                    <div>
+                        <span class="text-warning me-3">Olá, {{ session.get('username') }}</span>
+                        <a href="/privado" class="fw-medium text-decoration-none">Minha Área</a>
+                    </div>
+                {% else %}
+                    <a href="/login" class="fw-medium text-decoration-none">Login</a>
+                {% endif %}
             </div>
         </header>
     </div>

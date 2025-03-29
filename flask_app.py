@@ -35,6 +35,7 @@ class Usuario(db.Model):
     __tablename__ = "usuario"
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(150), unique=True, nullable=False)
+    email = db.Column(db.String(150), unique=True, nullable=False)
     password_hash = db.Column(db.String(200), nullable=False)
     vagas = db.relationship("Vaga", backref="criador", lazy=True)
 
@@ -134,6 +135,48 @@ def delete_vaga(vaga_id):
     db.session.commit()
     flash("Vaga deletada com sucesso!", "success")
     return redirect(url_for("privado"))
+
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    if request.method == "POST":
+        username = request.form["username"]
+        email = request.form["email"]
+        password = request.form["password"]
+
+        # Verificar se o usuário já existe
+        if Usuario.query.filter_by(username=username).first():
+            flash("Usuário já existe. Escolha outro nome.", "danger")
+            return redirect(url_for("register"))
+
+        # Criar novo usuário
+        novo_usuario = Usuario(username=username, email=email)
+        novo_usuario.set_password(password)
+        db.session.add(novo_usuario)
+        db.session.commit()
+        flash("Conta criada com sucesso! Faça login.", "success")
+        return redirect(url_for("login"))
+    return render_template("register.html")
+
+@app.route("/alterar_senha", methods=["GET", "POST"])
+def alterar_senha():
+    if not session.get("logged_in"):
+        flash("Você precisa fazer login para acessar esta página.", "warning")
+        return redirect(url_for("login"))
+    if request.method == "POST":
+        usuario_id = session.get("user_id")
+        usuario = Usuario.query.get(usuario_id)
+        senha_atual = request.form["senha_atual"]
+        nova_senha = request.form["nova_senha"]
+
+        if not usuario.check_password(senha_atual):
+            flash("Senha atual incorreta.", "danger")
+            return redirect(url_for("alterar_senha"))
+
+        usuario.set_password(nova_senha)
+        db.session.commit()
+        flash("Senha alterada com sucesso!", "success")
+        return redirect(url_for("privado"))
+    return render_template("alterar_senha.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
