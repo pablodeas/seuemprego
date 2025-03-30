@@ -3,3 +3,4 @@ __pycache__
 .env
 .venv
 STEPS.md
+delete_vagas.py
